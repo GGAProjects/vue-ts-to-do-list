@@ -1,58 +1,32 @@
 import { defineStore } from 'pinia';
-
 import { http } from "@/utils/http";
+import { manageStoreErrors } from "@/utils/storeErrors";
+import { LoginModel } from "@/interfaces/stores/authStoreInterfaces"
+import { CommonResponse, CommonResponseData } from "@/interfaces/stores/storeInterfaces"
 
-interface LoginModel {
-	email: string;
-	password: string;
-}
-
-interface ResponseExample {
-	statusCode: number,
-	message: string,
-	data: any
-}
-
-interface LoginResponse {
-	data?: any,
-	error: boolean,
-	message?: string,
-	errors?: any
-}
-
-
+const tokenIndex = 'token';
 
 export const useAuthStore = defineStore({
 	id: 'auth',
 	state: () => ({
 		user: {},
-		token: localStorage.getItem("token") ?? null,
+		token: localStorage.getItem(tokenIndex) ?? null,
 	}),
 	actions: {
-		async login(model: LoginModel): Promise<LoginResponse> {
+		async login(model: LoginModel): Promise<CommonResponseData> {
 			try {
-				const { data } = await http.post<ResponseExample>("/users/login", { ...model });
+				const { data } = await http.post<CommonResponse>("/users/login", { ...model });
 				this.token = data.data.token;
-				localStorage.setItem("token", data.data.token);
+				localStorage.setItem(tokenIndex, data.data.token);
 				return {
 					error: false,
 				}
 			} catch (error: any) {
-				if (error.data) {
-					return {
-						error: true,
-						errors: error.data.errors
-					}
-				}
-
-				return {
-					error: true,
-					errors: error
-				}
+				return manageStoreErrors(error);
 			}
 		},
 		logout() {
-			alert("LOGOUT")
+			localStorage.removeItem(tokenIndex);
 		}
 	}
 });
