@@ -28,8 +28,8 @@ export const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const token = localStorage.getItem("token");
 	const requiredAuth = to.matched.some(record => record.meta.requiresAuth);
+	const token = localStorage.getItem("token");
 
 	if (token && requiredAuth) next();
 	else if (!token && requiredAuth) next({ name: 'login' })

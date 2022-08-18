@@ -1,63 +1,50 @@
 <template>
-    <form @submit.prevent="login">
+    <form @submit.prevent="login" ref="form">
         <div class="input-container">
-            <input type="text" placeholder="email" v-model="model.email" />
-            <error-message :message="errorsModel.email" />
+            <input
+                type="text"
+                name="email"
+                placeholder="email"
+                v-model="model.email"
+            />
         </div>
         <div class="input-container">
             <input
                 type="text"
+                name="password"
                 placeholder="password"
                 v-model="model.password"
             />
-            <error-message :message="errorsModel.password" />
         </div>
         <button type="submit">Submit</button>
     </form>
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from "vue";
-import ErrorMessage from "@/components/General/ErrorMessage";
-import useAxios from "@/composables/useAxios";
-import { AxiosError } from "axios";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
+import useManageFormErrors from "@/composables/useManageFormErrors";
 
-const http = useAxios();
+const router = useRouter();
 
 const model = reactive<any>({
     email: "",
     password: "",
 });
 
-const errorsModel = reactive<any>({
-    email: "",
-    password: "",
-});
+const form = ref(null);
+const { showErrors } = useManageFormErrors(model, "input-container");
 
-watch(
-    () => model,
-    () => {
-        Object.keys(model).forEach((key: string) => {
-            if (model[key]) errorsModel[key] = "";
-        });
-    },
-    {
-        deep: true,
-    }
-);
+const authStore = useAuthStore();
 
 const login = async () => {
-    try {
-        const { data } = await http.post("/users/login", { ...model });
-        console.log(data);
-    } catch (error: Error | AxiosError) {
-        if (error.response) {
-            const errors = error.response.data.errors;
-            errors.forEach((item: any) => {
-                errorsModel[item.field] = item.messages.join(",");
-            });
-        }
+    const { error, errors } = await authStore.login(model);
+    if (error && errors) {
+        return showErrors(form.value!, errors);
     }
+
+    return router.push({ name: "home" });
 };
 </script>
 
