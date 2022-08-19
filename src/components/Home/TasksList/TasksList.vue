@@ -4,7 +4,6 @@
 
 <script setup lang="ts">
 import { useTaskStore } from "@/stores/taskStore";
-import { onMounted } from "vue";
 
 const taskStore = useTaskStore();
 
@@ -17,9 +16,7 @@ const getList = async () => {
     console.log(data);
 };
 
-onMounted(() => {
-    getList();
-});
+getList();
 </script>
 
 <style scoped></style>

@@ -21,8 +21,6 @@ const headers: Readonly<Record<string, string | boolean>> = {
 	"X-Requested-With": "XMLHttpRequest",
 };
 
-// We can use the following function to inject the JWT token through an interceptor
-// We get the `accessToken` from the localStorage that we set when we authenticate
 const injectToken = (config: AxiosRequestConfig): AxiosRequestConfig => {
 	try {
 		const token = localStorage.getItem("token");
