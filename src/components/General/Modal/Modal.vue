@@ -2,9 +2,10 @@
     <transition name="modal-fade">
         <div
             class="modal-backdrop"
-            v-if="showFlag"
+            v-show="showFlag"
             ref="modalWrapper"
             @click="closeModal"
+            :style="modalStyles"
         >
             <div
                 class="modal"
@@ -39,24 +40,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 interface Props {
     isVisible?: boolean;
+    width?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     isVisible: false,
+    width: "auto",
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["onClose"]);
 const modalContainer = ref<HTMLDivElement>();
 const modalWrapper = ref<HTMLDivElement>();
 const showFlag = ref(props.isVisible);
 
 const toggleModal = (value: boolean) => (showFlag.value = value);
 const showModal = () => toggleModal(true);
-const closeModal = () => toggleModal(false);
+const closeModal = () => {
+    toggleModal(false);
+    emit("onClose");
+};
 
 watch(
     () => props.isVisible,
@@ -65,12 +71,16 @@ watch(
     }
 );
 
+const modalStyles = computed<any>(() => {
+    return {
+        "--modal-width": props.width,
+    };
+});
+
 defineExpose({
     showModal,
     closeModal,
 });
-
-const close = emit("close");
 </script>
 
 <style lang="scss" scoped src="./styles.scss"></style>

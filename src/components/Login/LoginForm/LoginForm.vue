@@ -33,7 +33,7 @@ const model = reactive<any>({
     password: "",
 });
 
-const form = ref(null);
+const form = ref<HTMLElement>();
 const { showErrors } = useManageFormErrors(model, "input-container");
 
 const authStore = useAuthStore();

@@ -11,6 +11,14 @@ const routes = [
 		}
 	},
 	{
+		path: '/grupos',
+		name: 'group',
+		component: () => import("@/pages/TaskGroup/TaskGroup.vue"),
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
 		path: '/login',
 		name: 'login',
 		component: () => import("@/pages/Login/Login.vue"),

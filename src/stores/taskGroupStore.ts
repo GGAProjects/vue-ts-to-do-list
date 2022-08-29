@@ -2,40 +2,22 @@ import { defineStore } from 'pinia';
 import { http } from "@/utils/http";
 import { manageStoreErrors } from "@/utils/storeErrors";
 import { CommonResponse, CommonResponseData } from "@/interfaces/stores/storeInterfaces"
-import { TaskModel } from '@/interfaces/stores/taskStoreInterfaces';
+import { TaskGroupModel } from '@/interfaces/stores/taskGroupStoreInterfaces';
 
-export const useTaskStore = defineStore({
-	id: 'task',
+export const useTaskGroupStore = defineStore({
+	id: 'taskGroup',
 	state: () => ({
 		isLoading: false,
-		tasks: [] as any[],
 		taskGroups: [] as any[],
-		taskStatuses: [] as any[],
-		task: null as any,
+		taskGroup: null as any,
 	}),
 	actions: {
 		async getList(): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				const { data } = await http.get<CommonResponse>("/tasks");
-				this.isLoading = false;
-				this.tasks = data.data.tasks;
-				return {
-					error: false,
-					data: data.data.tasks
-				}
-			} catch (error: any) {
-				this.isLoading = false;
-				return manageStoreErrors(error);
-			}
-		},
-		async getRequiredData(): Promise<CommonResponseData> {
-			this.isLoading = true;
-			try {
-				const { data } = await http.get<CommonResponse>("/tasks/fieldsData");
+				const { data } = await http.get<CommonResponse>("/taskGroups");
 				this.isLoading = false;
 				this.taskGroups = data.data.taskGroups;
-				this.taskStatuses = data.data.taskStatuses;
 				return {
 					error: false,
 				}
@@ -44,10 +26,10 @@ export const useTaskStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
-		async register(model: TaskModel): Promise<CommonResponseData> {
+		async register(model: TaskGroupModel): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				await http.post<CommonResponse>("/tasks", model);
+				await http.post<CommonResponse>("/taskGroups", model);
 				this.isLoading = false;
 				this.getList();
 				return {
@@ -61,8 +43,8 @@ export const useTaskStore = defineStore({
 		async get(id: string): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				const { data } = await http.get<CommonResponse>(`/tasks/${id}`);
-				this.task = data.data.task;
+				const { data } = await http.get<CommonResponse>(`/taskGroups/${id}`);
+				this.taskGroup = data.data.taskGroup;
 				this.isLoading = false;
 				return {
 					error: false,
@@ -73,10 +55,10 @@ export const useTaskStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
-		async update(model: TaskModel): Promise<CommonResponseData> {
+		async update(model: TaskGroupModel): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				await http.put<CommonResponse>(`/tasks/${model.id}`, model);
+				await http.put<CommonResponse>(`/taskGroups/${model.id}`, model);
 				this.isLoading = false;
 				this.getList();
 				return {
@@ -90,7 +72,7 @@ export const useTaskStore = defineStore({
 		async destroy(id: string): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				await http.delete<CommonResponse>(`/tasks/${id}`);
+				await http.delete<CommonResponse>(`/taskGroups/${id}`);
 				this.isLoading = false;
 				this.getList();
 				return {
@@ -101,7 +83,7 @@ export const useTaskStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
-		async controller(model: TaskModel): Promise<CommonResponseData> {
+		controller(model: TaskGroupModel): Promise<CommonResponseData> {
 			return !model.id ? this.register(model) : this.update(model);
 		}
 	}
