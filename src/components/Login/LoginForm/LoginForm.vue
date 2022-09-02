@@ -1,40 +1,46 @@
 <template>
-    <form @submit.prevent="login" ref="form">
-        <div class="input-container">
-            <input
-                type="text"
-                name="email"
-                placeholder="email"
-                v-model="model.email"
-            />
-        </div>
-        <div class="input-container">
-            <input
-                type="text"
-                name="password"
-                placeholder="password"
-                v-model="model.password"
-            />
-        </div>
-        <button type="submit">Submit</button>
+    <form @submit.prevent="login" ref="form" class="grid gap-y-6">
+        <CustomInput
+            type="text"
+            name="email"
+            placeholder="Escriba su correo..."
+            v-model:value="model.email"
+            autocomplete="off"
+            label="Correo"
+        />
+        <CustomInput
+            type="password"
+            name="password"
+            placeholder="Escriba su clave..."
+            v-model:value="model.password"
+            autocomplete="off"
+            label="Clave"
+        />
+        <button
+            type="submit"
+            class="bg-gradient-to-b hover:bg-gradient-to-l from-[#2b5876] to-[#4e4376] rounded rounded-tl-xl rounded-br-xl py-2 px-6 text-white w-full mt-4"
+        >
+            Submit
+        </button>
     </form>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
+import CustomInput from "@/components/General/CustomInput";
 
 const router = useRouter();
 
-const model = reactive<any>({
+const model = ref<any>({
     email: "",
     password: "",
 });
 
 const form = ref<HTMLElement>();
-const { showErrors } = useManageFormErrors(model, "input-container");
+const { showErrors } = useManageFormErrors(model.value, "input-container");
 
 const authStore = useAuthStore();
 

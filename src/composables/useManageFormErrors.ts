@@ -4,7 +4,8 @@ import ErrorMessage from "@/components/General/ErrorMessage";
 interface ErrorObject {
 	container: HTMLElement;
 	name: string;
-	element: App<Element>
+	element: App<Element>;
+	div: HTMLElement;
 }
 
 const useManageFormErrors = (
@@ -15,6 +16,7 @@ const useManageFormErrors = (
 
 	const clearErrorObject = (errorElement: ErrorObject, index: number | null) => {
 		errorElement.element.unmount();
+		errorElement.div.remove();
 		if (index) {
 			errorsObjects.value.splice(index, 1);
 		}
@@ -89,6 +91,7 @@ const useManageFormErrors = (
 			container,
 			name,
 			element: ErrorInstance,
+			div
 		});
 	};
 	const showErrors = (form: HTMLElement, errors: any) => {

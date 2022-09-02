@@ -1,0 +1,30 @@
+.input-wrapper {
+	position: relative;
+	&:before {
+		background-color: rgb(107 114 128);
+		bottom: 0;
+		content: "";
+		display: block;
+		height: 3px;
+		left: 0;
+		position: absolute;
+		width: 100%;
+	}
+	.border-simulator {
+		background-image: linear-gradient(to right, var(--tw-gradient-stops));
+		bottom: 0;
+		content: "";
+		display: block;
+		height: 3px;
+		left: 0;
+		position: absolute;
+		transition: width 0.5s ease-in-out;
+		width: 0;
+	}
+	input {
+		border-bottom: 3px solid transparent;
+		&:focus + .border-simulator {	
+			width: 100% !important;
+		}
+	}
+}
