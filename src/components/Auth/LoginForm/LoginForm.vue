@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
@@ -41,7 +41,7 @@ const { showErrors } = useManageFormErrors(model.value, "input-container");
 const authStore = useAuthStore();
 
 const login = async () => {
-    const { error, errors } = await authStore.login(model);
+    const { error, errors } = await authStore.login(model.value);
     if (error && errors) {
         return showErrors(form.value!, errors);
     }

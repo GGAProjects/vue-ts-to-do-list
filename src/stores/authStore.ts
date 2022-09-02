@@ -25,6 +25,18 @@ export const useAuthStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
+		async register(model: LoginModel): Promise<CommonResponseData> {
+			try {
+				const { data } = await http.post<CommonResponse>("/users/register", { ...model });
+				this.token = data.data.token;
+				localStorage.setItem(tokenIndex, data.data.token);
+				return {
+					error: false,
+				}
+			} catch (error: any) {
+				return manageStoreErrors(error);
+			}
+		},
 		logout() {
 			localStorage.removeItem(tokenIndex);
 		}
