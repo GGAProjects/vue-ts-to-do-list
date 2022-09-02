@@ -1,5 +1,5 @@
 <template>
-    <div class="title text-2xl text-center font-bold mb-6">LOGIN</div>
+    <div class="title text-3xl text-center font-bold mb-6">LOGIN</div>
     <LoginForm />
 </template>
 

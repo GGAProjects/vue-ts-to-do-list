@@ -16,12 +16,7 @@
             autocomplete="off"
             label="Clave"
         />
-        <button
-            type="submit"
-            class="bg-gradient-to-b hover:bg-gradient-to-l from-[#2b5876] to-[#4e4376] rounded rounded-tl-xl rounded-br-xl py-2 px-6 text-white w-full mt-4"
-        >
-            Submit
-        </button>
+        <CustomButton type="submit">Ingresar</CustomButton>
     </form>
 </template>
 
@@ -31,6 +26,7 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
 import CustomInput from "@/components/General/CustomInput";
+import CustomButton from "@/components/General/CustomButton";
 
 const router = useRouter();
 
