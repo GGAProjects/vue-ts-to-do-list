@@ -10,11 +10,13 @@
                 </li>
             </ul>
         </div>
+        <DateCarousel />
     </div>
 </template>
 
 <script setup lang="ts">
 import { useTaskStore } from "@/stores/taskStore";
+import DateCarousel from "@/components/Home/TasksList/DateCarousel";
 
 const taskStore = useTaskStore();
 
@@ -39,7 +41,7 @@ const destroy = async (item: any) => {
     }
 };
 
-getList();
+// getList();
 </script>
 
 <style scoped></style>
