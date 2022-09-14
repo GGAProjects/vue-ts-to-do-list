@@ -1,0 +1,18 @@
+
+.date-container {
+    border-radius: 10px;
+    padding: 1rem 0.5rem;
+    width: 58px;
+    &.active {
+        background-color: white;
+        span {
+            color: black;
+            font-weight: 700;
+        }
+    }
+    span {
+        color: white;
+        display: block;
+        font-size: 0.85rem;
+    }
+}

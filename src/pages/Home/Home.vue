@@ -1,11 +1,13 @@
 <template>
     <div>
-        <div class="header bg-gradient-to-b from-[#2b5876] to-[#4e4376]"></div>
+        <div class="header"></div>
         <TasksList />
+        <!-- <DateCarousel /> -->
     </div>
 </template>
 
 <script setup lang="ts">
+// import DateCarousel from "@/components/Home/TasksList/DateCarousel";
 import TasksList from "@/components/Home/TasksList";
 </script>
 

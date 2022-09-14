@@ -4,7 +4,7 @@
             type="text"
             name="email"
             placeholder="Escriba su nombre completo..."
-            v-model:value="model.email"
+            v-model:value="model.name"
             autocomplete="off"
             label="Nombre completo"
         />
@@ -12,7 +12,7 @@
             type="text"
             name="name"
             placeholder="Escriba su correo..."
-            v-model:value="model.name"
+            v-model:value="model.email"
             autocomplete="off"
             label="Correo"
         />
