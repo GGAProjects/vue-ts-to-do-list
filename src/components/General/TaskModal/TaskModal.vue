@@ -1,56 +1,58 @@
 <template>
     <Modal ref="modalRef" width="500px" @on-close="clearObject()">
-        <template v-slot:header> header </template>
+        <template v-slot:header>
+            <span v-if="!model.id">Crear tarea</span>
+            <span v-else>Editar tarea</span>
+        </template>
         <template v-slot:body>
             <form @submit.prevent="taskController" ref="form">
-                <div class="input-container">
-                    <select
-                        name="task_status_id"
-                        id="task_status_id"
-                        v-model="model.taskStatusId"
-                    >
-                        <label for="task_status_id">Estado</label>
-                        <option
-                            :value="item.id"
-                            v-for="(item, index) in taskStore.taskStatuses"
-                            :key="index"
-                        >
-                            {{ item.status }}
-                        </option>
-                    </select>
-                </div>
-                <div class="input-container">
-                    <select
-                        name="task_group_id"
-                        id="task_group_id"
-                        v-model="model.taskGroupId"
-                    >
-                        <label for="task_group_id">Grupo</label>
-                        <option
-                            :value="item.id"
-                            v-for="(item, index) in taskStore.taskGroups"
-                            :key="index"
-                        >
-                            {{ item.group }}
-                        </option>
-                    </select>
-                </div>
-                <div class="input-container">
-                    <label for="task">Tarea</label>
-                    <input
-                        type="text"
-                        name="task"
-                        id="task"
-                        placeholder="task"
-                        v-model="model.task"
-                    />
-                </div>
-                <div class="button-container">
-                    <button>Registrar</button>
+                <div class="grid gap-5" ref="form">
+                    <div class="grid grid-cols-2 gap-5">
+                        <CustomSelect
+                            name="task_status_id"
+                            v-model:value="model.taskStatusId"
+                            label="Estado"
+                            :options="taskStore.taskStatuses"
+                            option-display-index="status"
+                        />
+                        <CustomSelect
+                            name="task_category_id"
+                            v-model:value="model.taskCategoryId"
+                            label="Categoría"
+                            :options="taskStore.taskCategories"
+                            option-display-index="category"
+                        />
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <CustomInput
+                            type="text"
+                            name="task"
+                            placeholder="Escriba su tarea..."
+                            v-model:value="model.task"
+                            autocomplete="off"
+                            label="Tarea"
+                        />
+                        <CustomInput
+                            type="date"
+                            name="expectedDate"
+                            placeholder="Fecha"
+                            v-model:value="model.expectedDate"
+                            label="Fecha"
+                        />
+                    </div>
                 </div>
             </form>
         </template>
-        <template v-slot:footer> footer </template>
+        <template v-slot:footer>
+            <div class="button-container">
+                <CustomButton v-if="!model.id" @click="taskController">
+                    Registrar
+                </CustomButton>
+                <CustomButton v-else @click="taskController"
+                    >Actualizar</CustomButton
+                >
+            </div>
+        </template>
     </Modal>
 </template>
 
@@ -59,27 +61,32 @@ import { reactive, ref, watch } from "vue";
 import Modal from "@/components/General/Modal";
 import { useTaskStore } from "@/stores/taskStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
+import CustomInput from "@/components/General/CustomInput";
+import CustomSelect from "@/components/General/CustomSelect";
+import CustomButton from "@/components/General/CustomButton";
 
 const modalRef = ref<InstanceType<typeof Modal>>();
 const taskStore = useTaskStore();
 const model = reactive<any>({
+    id: "",
     taskStatusId: "",
-    taskGroupId: "",
+    taskCategoryId: "",
     task: "",
+    expectedDate: "",
 });
 const form = ref<HTMLElement>();
 const { showErrors } = useManageFormErrors(model, "input-container");
 
 const clearObject = () => {
+    model.id = "";
     model.taskStatusId = "";
-    model.taskGroupId = "";
+    model.taskCategoryId = "";
     model.task = "";
+    model.expectedDate = "";
 };
 
 const openModal = () => {
-    taskStore.getRequiredData().then(() => {
-        console.log(taskStore.taskGroups);
-    });
+    taskStore.getRequiredData();
     modalRef.value?.showModal();
 };
 
@@ -89,7 +96,7 @@ const closeModal = () => {
 };
 
 const taskController = async () => {
-    const { error, errors } = await taskStore.register(model);
+    const { error, errors } = await taskStore.controller(model);
     if (error && errors) {
         return showErrors(form.value!, errors);
     }

@@ -3,21 +3,22 @@ import { http } from "@/utils/http";
 import { manageStoreErrors } from "@/utils/storeErrors";
 import { CommonResponse, CommonResponseData } from "@/interfaces/stores/storeInterfaces"
 import { TaskModel } from '@/interfaces/stores/taskStoreInterfaces';
+import { fillExpectedDateFilter } from '@/utils/filters';
 
 export const useTaskStore = defineStore({
 	id: 'task',
 	state: () => ({
 		isLoading: false,
 		tasks: [] as any[],
-		taskGroups: [] as any[],
+		taskCategories: [] as any[],
 		taskStatuses: [] as any[],
 		task: null as any,
 	}),
 	actions: {
-		async getList(): Promise<CommonResponseData> {
+		async getList(filters = {}): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				const { data } = await http.get<CommonResponse>("/tasks");
+				const { data } = await http.get<CommonResponse>(`/tasks/?filters=${JSON.stringify(filters)}`);
 				this.isLoading = false;
 				this.tasks = data.data.tasks;
 				return {
@@ -34,7 +35,7 @@ export const useTaskStore = defineStore({
 			try {
 				const { data } = await http.get<CommonResponse>("/tasks/fieldsData");
 				this.isLoading = false;
-				this.taskGroups = data.data.taskGroups;
+				this.taskCategories = data.data.taskCategories;
 				this.taskStatuses = data.data.taskStatuses;
 				return {
 					error: false,
@@ -47,9 +48,9 @@ export const useTaskStore = defineStore({
 		async register(model: TaskModel): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				await http.post<CommonResponse>("/tasks", model);
+				const { data } = await http.post<CommonResponse>("/tasks", model);
 				this.isLoading = false;
-				this.getList();
+				this.getList({ ...fillExpectedDateFilter(new Date(data.data.task.expectedDate)) });
 				return {
 					error: false,
 				}
@@ -76,9 +77,9 @@ export const useTaskStore = defineStore({
 		async update(model: TaskModel): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
-				await http.put<CommonResponse>(`/tasks/${model.id}`, model);
+				const { data } = await http.put<CommonResponse>(`/tasks/${model.id}`, model);
 				this.isLoading = false;
-				this.getList();
+				this.getList({ ...fillExpectedDateFilter(new Date(data.data.task.expectedDate)) });
 				return {
 					error: false,
 				}

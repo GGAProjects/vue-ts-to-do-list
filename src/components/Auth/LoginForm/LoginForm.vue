@@ -16,7 +16,7 @@
             autocomplete="off"
             label="Clave"
         />
-        <CustomButton type="submit">Ingresar</CustomButton>
+        <CustomButton type="submit" class="mt-4">Ingresar</CustomButton>
     </form>
 </template>
 
@@ -49,5 +49,3 @@ const login = async () => {
     return router.push({ name: "home" });
 };
 </script>
-
-<style lang="scss" scoped></style>

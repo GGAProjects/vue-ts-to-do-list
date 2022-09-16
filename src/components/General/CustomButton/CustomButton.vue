@@ -29,6 +29,6 @@ const buttonClasses = computed(() => {
         return "custom-button-container";
     }
 
-    return "bg-gradient-to-b hover:bg-gradient-to-l from-[#2b5876] to-[#4e4376] rounded rounded-tl-[50px] rounded-br-[50px] py-2 px-6 text-white w-full mt-4";
+    return "bg-gradient-to-b hover:bg-gradient-to-l from-[#2b5876] to-[#4e4376] rounded rounded-tl-[50px] rounded-br-[50px] py-2 px-6 text-white w-full";
 });
 </script>

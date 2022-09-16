@@ -16,7 +16,7 @@
                 @click.stop=""
             >
                 <header
-                    class="modal-header"
+                    class="modal-header text-gray-900 text-sm block font-bold"
                     id="modalTitle"
                     v-if="$slots['header']"
                 >

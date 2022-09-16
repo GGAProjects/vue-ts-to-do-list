@@ -1,16 +1,28 @@
 <template>
     <div>
-        <h3>Listado</h3>
-        <div>
-            <ul>
-                <li v-for="(item, index) in taskStore.tasks" :key="index">
-                    {{ item.task }}
-                    <button type="button" @click="edit(item)">editar</button>
-                    <button type="button" @click="destroy(item)">borrar</button>
-                </li>
-            </ul>
+        <DateCarousel
+            @selectedDate="selectedDate"
+            :tasksQuantity="taskStore.tasks.length"
+        />
+        <div class="container mx-auto">
+            <div class="grid grid-cols-4 gap-5 mt-4">
+                <button
+                    v-for="(item, index) in taskStore.tasks"
+                    :key="index"
+                    class="task-item"
+                    @click="viewTask(item)"
+                >
+                    <input
+                        type="checkbox"
+                        class="w-6 h-6 rounded"
+                        @click.stop="updateTaskStatus"
+                    />
+                    <span>
+                        {{ item.task }}
+                    </span>
+                </button>
+            </div>
         </div>
-        <DateCarousel />
     </div>
 </template>
 
@@ -20,8 +32,8 @@ import DateCarousel from "@/components/Home/TasksList/DateCarousel";
 
 const taskStore = useTaskStore();
 
-const getList = async () => {
-    const { error } = await taskStore.getList();
+const getList = async (filters = {}) => {
+    const { error } = await taskStore.getList(filters);
     if (error) {
         return;
     }
@@ -41,7 +53,34 @@ const destroy = async (item: any) => {
     }
 };
 
-// getList();
+const selectedDate = (currentDate: Date) => {
+    const timeRegex = /(?<=T).*(?=Z)/gm;
+    const isoDateTime = new Date(
+        currentDate.getTime() - currentDate.getTimezoneOffset() * 60000
+    ).toISOString();
+
+    getList({
+        expectedDate: {
+            gte: isoDateTime.replace(timeRegex, "00:00:00.000"),
+            lte: isoDateTime.replace(timeRegex, "23:59:59.000"),
+        },
+    });
+};
+
+const viewTask = (task: any) => {
+    edit(task);
+};
+
+const updateTaskStatus = () => {};
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.task-item {
+    align-items: center;
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    gap: 1rem;
+    padding: 1rem;
+}
+</style>

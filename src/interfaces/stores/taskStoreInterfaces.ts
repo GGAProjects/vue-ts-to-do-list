@@ -1,7 +1,8 @@
 export interface TaskModel {
 	id?: string;
 	taskStatusId: string;
-	taskGroupId: string;
+	taskCategoryId: string;
 	task: string;
 	description?: string;
+	expectedDate: Date;
 }

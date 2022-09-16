@@ -24,7 +24,7 @@
             autocomplete="off"
             label="Clave"
         />
-        <CustomButton type="submit">Registrarse</CustomButton>
+        <CustomButton type="submit" class="mt-4">Registrarse</CustomButton>
     </form>
 </template>
 

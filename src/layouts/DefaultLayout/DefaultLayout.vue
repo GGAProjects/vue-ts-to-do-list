@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gradient-to-b from-[#2b5876] to-[#4e4376]">
+    <div class="min-h-screen bg-gradient-to-b from-[#2b5876] to-[#4e4376]">
         <router-view></router-view>
         <BottomBar />
     </div>
