@@ -15,7 +15,10 @@
                     <input
                         type="checkbox"
                         class="w-6 h-6 rounded"
-                        @click.stop="updateTaskStatus"
+                        @click.stop="updateTaskStatus($event, item.id)"
+                        :checked="
+                            item.status.status === TaskStatusesEnum.FINISHED
+                        "
                     />
                     <span>
                         {{ item.task }}
@@ -29,6 +32,7 @@
 <script setup lang="ts">
 import { useTaskStore } from "@/stores/taskStore";
 import DateCarousel from "@/components/Home/TasksList/DateCarousel";
+import { TaskStatusesEnum } from "@/enums/TaskStatusesEnum";
 
 const taskStore = useTaskStore();
 
@@ -71,7 +75,14 @@ const viewTask = (task: any) => {
     edit(task);
 };
 
-const updateTaskStatus = () => {};
+const updateTaskStatus = async (event: any, id: string) => {
+    await taskStore.updateStatus(
+        id,
+        event.target.checked
+            ? TaskStatusesEnum.FINISHED
+            : TaskStatusesEnum.PENDING
+    );
+};
 </script>
 
 <style scoped lang="scss">

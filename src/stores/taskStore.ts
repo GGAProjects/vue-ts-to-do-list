@@ -88,6 +88,23 @@ export const useTaskStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
+		async updateStatus(id: string, status: string): Promise<CommonResponseData> {
+			this.isLoading = true;
+			try {
+				const { data } = await http.put<CommonResponse>(`/tasks/${id}/updateStatus`, { status });
+				this.isLoading = false;
+				this.getList({ ...fillExpectedDateFilter(new Date(data.data.task.expectedDate)) });
+				return {
+					error: false,
+				}
+			} catch (error: any) {
+				this.isLoading = false;
+				return manageStoreErrors(error);
+			}
+		},
+		async controller(model: TaskModel): Promise<CommonResponseData> {
+			return !model.id ? this.register(model) : this.update(model);
+		},
 		async destroy(id: string): Promise<CommonResponseData> {
 			this.isLoading = true;
 			try {
@@ -102,8 +119,6 @@ export const useTaskStore = defineStore({
 				return manageStoreErrors(error);
 			}
 		},
-		async controller(model: TaskModel): Promise<CommonResponseData> {
-			return !model.id ? this.register(model) : this.update(model);
-		}
+
 	}
 });
