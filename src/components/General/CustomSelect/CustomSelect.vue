@@ -16,8 +16,9 @@
             >
                 <option
                     :value="item[optionIdIndex]"
-                    v-for="(item, index) in options"
+                    v-for="(item, index) in selectOptions"
                     :key="index"
+                    :hidden="item[optionIdIndex] === ''"
                 >
                     {{ item[optionDisplayIndex] }}
                 </option>
@@ -29,7 +30,7 @@
 
 <script setup lang="ts">
 import { uuid } from "@/utils/uuid";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 interface Props {
     id?: string;
     label?: string;
@@ -43,6 +44,19 @@ const props = withDefaults(defineProps<Props>(), {
     optionIdIndex: "id",
     optionDisplayIndex: "name",
 });
+
+const selectOptions = ref<any[]>([]);
+
+watch(
+    () => props.options,
+    () => {
+        const defaultOption = {
+            [props.optionIdIndex]: "",
+            [props.optionDisplayIndex]: "Seleccionar una opción",
+        };
+        selectOptions.value = [...new Set([defaultOption, ...props.options])];
+    }
+);
 
 const currentId = ref<string>(props.id || uuid());
 
