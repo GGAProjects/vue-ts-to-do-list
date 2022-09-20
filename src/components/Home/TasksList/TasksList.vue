@@ -6,24 +6,13 @@
         />
         <div class="container mx-auto">
             <div class="grid grid-cols-4 gap-5 mt-4">
-                <button
+                <TaskItem
                     v-for="(item, index) in taskStore.tasks"
+                    :task="item"
                     :key="index"
-                    class="task-item"
-                    @click="viewTask(item)"
-                >
-                    <input
-                        type="checkbox"
-                        class="w-6 h-6 rounded"
-                        @click.stop="updateTaskStatus($event, item.id)"
-                        :checked="
-                            item.status.status === TaskStatusesEnum.FINISHED
-                        "
-                    />
-                    <span>
-                        {{ item.task }}
-                    </span>
-                </button>
+                    @viewTask="viewTask"
+                    @updateTaskStatus="updateTaskStatus"
+                />
             </div>
         </div>
     </div>
@@ -33,6 +22,7 @@
 import { useTaskStore } from "@/stores/taskStore";
 import DateCarousel from "@/components/Home/TasksList/DateCarousel";
 import { TaskStatusesEnum } from "@/enums/TaskStatusesEnum";
+import TaskItem from "./TaskItem";
 
 const taskStore = useTaskStore();
 
@@ -85,13 +75,4 @@ const updateTaskStatus = async (event: any, id: string) => {
 };
 </script>
 
-<style scoped lang="scss">
-.task-item {
-    align-items: center;
-    display: flex;
-    background-color: white;
-    border-radius: 10px;
-    gap: 1rem;
-    padding: 1rem;
-}
-</style>
+<style scoped lang="scss" src="./styles.scss"></style>
