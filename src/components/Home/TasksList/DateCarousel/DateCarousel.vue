@@ -5,7 +5,6 @@
                 {{ monthNames[selectedDate.getMonth()] }}
                 {{ selectedDate.getDate() }}
             </span>
-            <span>{{ tasksQuantity }} tareas hoy</span>
         </div>
         <carousel :items-to-show="10" ref="dateCarousel">
             <slide v-for="(item, index) in datesArray" :key="index">
@@ -32,12 +31,6 @@ import {
     addDays,
     getDatesBetweenRange,
 } from "@/utils/dateMethods";
-
-interface Props {
-    tasksQuantity: number;
-}
-
-defineProps<Props>();
 
 const emit = defineEmits(["selectedDate"]);
 

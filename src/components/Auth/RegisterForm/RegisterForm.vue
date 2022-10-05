@@ -2,7 +2,7 @@
     <form @submit.prevent="login" ref="form" class="grid gap-y-6">
         <CustomInput
             type="text"
-            name="email"
+            name="name"
             placeholder="Escriba su nombre completo..."
             v-model:value="model.name"
             autocomplete="off"
@@ -10,11 +10,19 @@
         />
         <CustomInput
             type="text"
-            name="name"
+            name="email"
             placeholder="Escriba su correo..."
             v-model:value="model.email"
             autocomplete="off"
             label="Correo"
+        />
+        <CustomInput
+            type="text"
+            name="documentId"
+            placeholder="Escriba su documento..."
+            v-model:value="model.documentId"
+            autocomplete="off"
+            label="Documento"
         />
         <CustomInput
             type="password"
@@ -41,6 +49,7 @@ const router = useRouter();
 const model = ref<any>({
     email: "",
     name: "",
+    documentId: "",
     password: "",
 });
 

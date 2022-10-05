@@ -6,6 +6,7 @@
             task.status.status === TaskStatusesEnum.IN_PROGRESS
                 ? 'in-progress'
                 : '',
+            task.status.status === TaskStatusesEnum.FINISHED ? 'finished' : '',
         ]"
     >
         <input

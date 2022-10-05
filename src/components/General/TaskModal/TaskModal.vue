@@ -57,13 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import Modal from "@/components/General/Modal";
 import { useTaskStore } from "@/stores/taskStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
 import CustomInput from "@/components/General/CustomInput";
 import CustomSelect from "@/components/General/CustomSelect";
 import CustomButton from "@/components/General/CustomButton";
+import { TaskStatusesEnum } from "@/enums/TaskStatusesEnum";
 
 const modalRef = ref<InstanceType<typeof Modal>>();
 const taskStore = useTaskStore();
@@ -113,6 +114,21 @@ watch(
             });
         } else {
             closeModal();
+        }
+    }
+);
+
+watch(
+    () => modalRef.value?.showFlag,
+    (isVisible) => {
+        if (isVisible && !model.id) {
+            const searchPendingItem = taskStore.taskStatuses.find(
+                (item: any) => item.status === TaskStatusesEnum.PENDING
+            );
+
+            if (searchPendingItem) {
+                model.taskStatusId = searchPendingItem.id;
+            }
         }
     }
 );

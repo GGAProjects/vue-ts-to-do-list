@@ -44,5 +44,10 @@
 			content: '';
 		}
 	}
+	&.finished {
+		span {
+			text-decoration: line-through;
+		}
+	}
 }
 

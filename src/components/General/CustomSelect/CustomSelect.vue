@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { uuid } from "@/utils/uuid";
 import { ref, watch } from "vue";
+
 interface Props {
     id?: string;
     label?: string;
@@ -50,11 +51,15 @@ const selectOptions = ref<any[]>([]);
 watch(
     () => props.options,
     () => {
-        const defaultOption = {
-            [props.optionIdIndex]: "",
-            [props.optionDisplayIndex]: "Seleccionar una opción",
-        };
-        selectOptions.value = [...new Set([defaultOption, ...props.options])];
+        selectOptions.value = [
+            ...new Set([
+                {
+                    [props.optionIdIndex]: "",
+                    [props.optionDisplayIndex]: "Seleccionar una opción",
+                },
+                ...props.options,
+            ]),
+        ];
     }
 );
 

@@ -1,11 +1,9 @@
 <template>
     <div>
-        <DateCarousel
-            @selectedDate="selectedDate"
-            :tasksQuantity="taskStore.tasks.length"
-        />
+        <DateCarousel @selectedDate="selectedDate" />
         <div class="container mx-auto">
-            <div class="grid grid-cols-4 gap-5 mt-4">
+            <CounterSummary class="my-4" />
+            <div class="grid grid-cols-4 gap-5 mt-6">
                 <TaskItem
                     v-for="(item, index) in taskStore.tasks"
                     :task="item"
@@ -19,8 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { useTaskStore } from "@/stores/taskStore";
 import DateCarousel from "@/components/Home/TasksList/DateCarousel";
+import CounterSummary from "@/components/Home/TasksList/CounterSummary";
+import { useTaskStore } from "@/stores/taskStore";
 import { TaskStatusesEnum } from "@/enums/TaskStatusesEnum";
 import TaskItem from "./TaskItem";
 
@@ -74,5 +73,3 @@ const updateTaskStatus = async (event: any, id: string) => {
     );
 };
 </script>
-
-<style scoped lang="scss" src="./styles.scss"></style>

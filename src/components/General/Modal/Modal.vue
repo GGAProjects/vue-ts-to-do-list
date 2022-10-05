@@ -80,6 +80,7 @@ const modalStyles = computed<any>(() => {
 defineExpose({
     showModal,
     closeModal,
+    showFlag,
 });
 </script>
 
