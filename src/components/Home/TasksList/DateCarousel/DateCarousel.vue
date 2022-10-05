@@ -13,6 +13,7 @@
                     class="date-container"
                     :class="[item.active ? 'active' : '']"
                 >
+                    <span>{{ shortMonthNames[item.getMonth()] }}</span>
                     <span>{{ item.getDate() }}</span>
                     <span>{{ dayNames[item.getDay()] }}</span>
                 </button>
@@ -28,13 +29,14 @@ import "vue3-carousel/dist/carousel.css";
 import {
     dayNames,
     monthNames,
+    shortMonthNames,
     addDays,
     getDatesBetweenRange,
 } from "@/utils/dateMethods";
 
 const emit = defineEmits(["selectedDate"]);
 
-const gapDates = 10;
+const gapDates = 200;
 
 const dateCarousel = ref<any>(null);
 const datesArray = ref<Array<any>>([]);
@@ -82,6 +84,25 @@ const selectDate = (index: number) => {
     dateCarousel.value?.slideTo(index);
 };
 
+const fillData = (type: string, index = 0) => {
+    if (type === "left") {
+        const currentDay = datesArray.value[index];
+        const previousDay = addDays(new Date(currentDay.getTime()), -1);
+        const leftRangeDay = addDays(
+            new Date(previousDay.getTime()),
+            -1 * gapDates
+        );
+        const newDatesRange = getDatesBetweenRange(leftRangeDay, previousDay);
+
+        datesArray.value = [
+            ...new Set([...newDatesRange]),
+            ...datesArray.value,
+        ];
+        // console.log(newDatesRange);
+        return;
+    }
+};
+
 watch(
     () => dateCarousel.value?.data.currentSlide.value,
     (currentSlide) => {
@@ -89,7 +110,7 @@ watch(
             currentSlide === dateCarousel.value.data.minSlide.value ||
             currentSlide === dateCarousel.value.data.maxSlide.value
         ) {
-            clickNewDate(currentSlide);
+            //TODO: Check to add dates
         }
     }
 );

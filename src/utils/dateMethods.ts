@@ -12,15 +12,23 @@ export const monthNames = [
 	"Noviembre",
 	"Diciembre",
 ];
+
+export const shortMonthNames = [
+	"Ene",
+	"Feb",
+	"Mar",
+	"Abr",
+	"May",
+	"Jun",
+	"Jul",
+	"Ago",
+	"Set",
+	"Oct",
+	"Nov",
+	"Dic",
+];
+
 export const dayNames = ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"];
-
-
-const formatDateObject = (currentDate: Date) => {
-	return {
-		dateObject: currentDate,
-		active: false,
-	};
-};
 
 export const addDays = (currentDate: Date, days: number) => {
 	const newDate = new Date(currentDate.getTime());

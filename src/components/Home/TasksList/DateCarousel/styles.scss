@@ -8,7 +8,7 @@
 .date-container {
     border-radius: 10px;
     padding: 1rem 0.5rem;
-    width: 58px;
+    width: 70px;
     &.active {
         background-color: white;
         span {
@@ -20,5 +20,10 @@
         color: white;
         display: block;
         font-size: 0.85rem;
+		&:first-child {
+			margin-bottom: 0.5rem;
+			font-size: 0.75rem;
+			font-weight: 700;
+		}
     }
 }

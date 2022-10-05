@@ -4,19 +4,19 @@
         <Modal ref="modalRef" width="500px" @on-close="clearObject()">
             <template v-slot:header> header </template>
             <template v-slot:body>
-                <form @submit.prevent="taskGroupController" ref="form">
+                <form @submit.prevent="taskCategoryController" ref="form">
                     <div class="input-container">
-                        <label for="task">Grupo</label>
+                        <label for="task">Categoría</label>
                         <input
                             type="text"
-                            name="group"
-                            id="group"
-                            placeholder="group"
-                            v-model="model.group"
+                            name="category"
+                            id="category"
+                            placeholder="category"
+                            v-model="model.category"
                         />
                     </div>
                     <div class="button-container">
-                        <button v-if="!model.id">Registra 2r</button>
+                        <button v-if="!model.id">Registrar</button>
                         <button v-else>Actualizar</button>
                     </div>
                 </form>
@@ -29,19 +29,19 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
 import Modal from "@/components/General/Modal";
-import { useTaskGroupStore } from "@/stores/taskGroupStore";
+import { useTaskCategoryStore } from "@/stores/taskCategoryStore";
 import useManageFormErrors from "@/composables/useManageFormErrors";
 
 const modalRef = ref<InstanceType<typeof Modal>>();
-const taskGroupStore = useTaskGroupStore();
+const taskCategoryStore = useTaskCategoryStore();
 const model = reactive<any>({
-    group: "",
+    category: "",
 });
 const form = ref<HTMLElement>();
 const { showErrors } = useManageFormErrors(model, "input-container");
 
 const clearObject = () => {
-    model.group = "";
+    model.category = "";
 };
 
 const openModal = () => {
@@ -53,9 +53,8 @@ const closeModal = () => {
     modalRef.value?.closeModal();
 };
 
-const taskGroupController = async () => {
-    const { error, errors } = await taskGroupStore.controller(model);
-    console.log("AQUIII");
+const taskCategoryController = async () => {
+    const { error, errors } = await taskCategoryStore.controller(model);
     if (error && errors) {
         return showErrors(form.value!, errors);
     }
@@ -63,7 +62,7 @@ const taskGroupController = async () => {
 };
 
 watch(
-    () => taskGroupStore.taskGroup,
+    () => taskCategoryStore.taskCategory,
     (currentModal) => {
         if (currentModal) {
             openModal();

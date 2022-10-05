@@ -4,7 +4,7 @@
         <div>
             <ul>
                 <li
-                    v-for="(item, index) in taskGroupStore.taskGroups"
+                    v-for="(item, index) in taskCategoryStore.taskCategories"
                     :key="index"
                 >
                     {{ item.group }}
@@ -17,26 +17,26 @@
 </template>
 
 <script setup lang="ts">
-import { useTaskGroupStore } from "@/stores/taskGroupStore";
+import { useTaskCategoryStore } from "@/stores/taskCategoryStore";
 
-const taskGroupStore = useTaskGroupStore();
+const taskCategoryStore = useTaskCategoryStore();
 
 const getList = async () => {
-    const { error } = await taskGroupStore.getList();
+    const { error } = await taskCategoryStore.getList();
     if (error) {
         return;
     }
 };
 
 const edit = async (item: any) => {
-    const { error } = await taskGroupStore.get(item.id);
+    const { error } = await taskCategoryStore.get(item.id);
     if (error) {
         return;
     }
 };
 
 const destroy = async (item: any) => {
-    const { error } = await taskGroupStore.destroy(item.id);
+    const { error } = await taskCategoryStore.destroy(item.id);
     if (error) {
         return;
     }

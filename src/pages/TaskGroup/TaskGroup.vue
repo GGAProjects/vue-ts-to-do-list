@@ -2,13 +2,13 @@
     <div>
         Task group
         <TaskGroupsList />
-        <TaskGroupModal />
+        <TaskCategoryModal />
     </div>
 </template>
 
 <script setup lang="ts">
 import TaskGroupsList from "@/components/TaskGroup/TaskGroupsList";
-import TaskGroupModal from "@/components/TaskGroup/TaskGroupModal";
+import TaskCategoryModal from "@/components/TaskGroup/TaskCategoryModal";
 </script>
 
 <style scoped></style>
